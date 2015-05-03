@@ -1,0 +1,54 @@
+<!-- <div class="panel panel-default" ng-repeat="organization in organizations" ng-if="organization.qgroups.length">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ organization.name }}</h3>
+    </div>
+    <table class="table table-bordered" ng-show="organization.qgroups.length">
+        <tbody>
+        <tr ng-repeat="item in organization.qgroups">
+            <th>
+              <span class="pull-right btn-qgroup" style="margin-top: 7px;">
+                <a href="" class="btn btn-sm btn-default" ui-sref="^.edit({id: qgroup.id})">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="" class="btn btn-sm btn-default" ng-click="delete({id: qgroup.id})">
+                  <i class="fa fa-trash-o"></i>
+                </a>
+              </span>
+              <h4 class="list-qgroup-item-heading">
+                <a href="" ui-sref="^.view({id: qgroup.id})">{{qgroup.name}}</a>
+              </h4>
+              <p class="list-qgroup-item-text">{{qgroup.description}}</p>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <div class="panel-body" ng-show="!organization.qgroups.length">
+        <h4 class="list-group-item-heading" translate>
+          There are no groups in this organization!
+        </h4>
+        <p class="list-group-item-text" translate>Click <a href="" ui-sref="^.add({ organizationId: organization.id })">here</a> to add a group!</p>
+    </div>
+</div> -->
+
+<div class='list-qgroup'>
+  <div ng-repeat="qgroup in qgroups" class="list-qgroup-item">
+    <span class="pull-right btn-qgroup" style="margin-top: 7px;">
+      <a href="" class="btn btn-sm btn-default" ui-sref="^.edit({id: qgroup.id})">
+        <i class="fa fa-pencil"></i>
+      </a>
+      <a href="" class="btn btn-sm btn-default" ng-click="delete({id: qgroup.id})">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </span>
+    <h4 class="list-qgroup-item-heading">
+      <a href="" ui-sref="^.view({id: qgroup.id})">{{qgroup.name}}</a>
+    </h4>
+    <p class="list-qgroup-item-text">{{qgroup.description}}</p>
+  </div>
+  <div ng-show="!qgroups.length" class="list-qgroup-item">
+    <h4 class="list-qgroup-item-heading" translate>
+      There are no groups
+    </h4>
+    <p class="list-qgroup-item-text" translate>Click <a href="" ui-sref="^.add">here</a> to add a group!</p>
+  </div>
+</div>

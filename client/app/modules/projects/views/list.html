@@ -1,0 +1,67 @@
+<div class="panel panel-default" ng-repeat="area in areas">
+    <div class="panel-heading">
+        <div class="pull-right">
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.add({ areaId: area.id })"
+               title="{{ 'Add project to this area' | translate }}"><i class="fa fa-plus-circle"></i></a>
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.editarea({ areaId: area.id })"
+               title="{{ 'Edit area' | translate }}"><i class="fa fa-pencil"></i></a>
+            <a href="" class="btn btn-default btn-xs" ng-click="deletearea({ id: area.id })"
+               title="{{ 'Delete area' | translate }}"><i class="fa fa-trash-o"></i></a>
+        </div>
+        <h3 class="panel-title">{{ area.name }}</h3>
+    </div>
+    <table class="table table-bordered" ng-show="area.projects.length">
+        <tbody>
+        <tr ng-repeat="item in area.projects">
+            <th>
+                <a href="" ui-sref="^.view({id: item.id})">{{item.name}}</a>
+                <small>{{item.description}}</small>
+                <div class="pull-right">
+                    <!-- <span class="label label-default">{{item.price}}</span> -->
+                    <a href="" class="btn btn-xs btn-default" ui-sref="^.edit({id: item.id})">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a href="" class="btn btn-xs btn-default" ng-click="delete({id: item.id})">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <div class="panel-body" ng-show="!area.projects.length">
+        <h4 class="list-group-item-heading" translate>
+          There are no projects in this area!
+        </h4>
+        <p class="list-group-item-text" translate>Click <a href="" ui-sref="^.add({ areaId: area.id })">here</a> to add a project!</p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="pull-right">
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.add()"
+               title="{{ 'Add general purpose project' | translate }}"><i class="fa fa-plus-circle"></i></a>
+        </div>
+        <h3 class="panel-title" translate>General Purpose Projects</h3>
+    </div>
+    <table class="table table-bordered" ng-show="projects.length">
+        <tbody>
+        <tr ng-repeat="item in projects">
+            <th>
+                <a href="" ui-sref="^.view({id: item.id})">{{item.name}}</a>
+                <small>{{item.description}}</small>
+                <div class="pull-right">
+                    <!-- <span class="label label-default">{{item.price}}</span> -->
+                    <a href="" class="btn btn-xs btn-default" ui-sref="^.edit({id: item.id})">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a href="" class="btn btn-xs btn-default" ng-click="delete({id: item.id})">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,36 @@
+{
+  "name": "Qgroup",
+  "plural": "Qgroups",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "organizationId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId"
+    },
+    "users": {
+      "type": "hasMany",
+      "model": "user"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

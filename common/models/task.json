@@ -1,0 +1,48 @@
+{
+  "name": "Task",
+  "plural": "Tasks",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "ownerId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "project": {
+      "type": "belongsTo",
+      "model": "Project",
+      "foreignKey": "projectId"
+    },
+    "owner": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "userId"
+    },
+    "assigned": {
+      "type": "hasMany",
+      "model": "user",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

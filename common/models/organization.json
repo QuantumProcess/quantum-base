@@ -1,0 +1,52 @@
+{
+  "name": "Organization",
+  "plural": "Organizations",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "id"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "lema": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "areas": {
+      "type": "hasMany",
+      "model": "Area",
+      "foreignKey": "organizationId"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "Project",
+      "foreignKey": "organizationId"
+    },
+    "users": {
+      "type": "hasMany",
+      "model": "user",
+      "foreignKey": "organizationId"
+    },
+    "groups": {
+      "type": "hasMany",
+      "model": "Qgroup",
+      "foreignKey": "organizationId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

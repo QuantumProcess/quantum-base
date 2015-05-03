@@ -1,0 +1,42 @@
+{
+  "name": "Area",
+  "plural": "Areas",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "organizationId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "Project",
+      "foreignKey": "areaId"
+    },
+    "members": {
+      "type": "hasMany",
+      "model": "user",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

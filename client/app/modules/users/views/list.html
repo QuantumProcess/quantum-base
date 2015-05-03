@@ -1,0 +1,89 @@
+<div class="panel panel-default" ng-repeat="organization in organizations" ng-if="organization.users.length">
+    <div class="panel-heading">
+        <!-- <div class="pull-right">
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.add({ organizationId: organization.id })"
+               title="{{ 'Add user to this organization' | translate }}"><i class="fa fa-plus-circle"></i></a>
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.editorganization({ organizationId: organization.id })"
+               title="{{ 'Edit organization' | translate }}"><i class="fa fa-pencil"></i></a>
+            <a href="" class="btn btn-default btn-xs" ng-click="deleteorganization({ id: organization.id })"
+               title="{{ 'Delete organization' | translate }}"><i class="fa fa-trash-o"></i></a>
+        </div> -->
+        <h3 class="panel-title">{{ organization.name }}</h3>
+    </div>
+    <table class="table table-bordered" ng-show="organization.users.length">
+        <tbody>
+        <tr ng-repeat="item in organization.users">
+            <th>
+              <a href="" ui-sref="app.users.view({id: item.id})">{{item.username}}</a>
+              <span class="text-muted">{{item.email}}</span>
+              <span ng-repeat="role in item.roles" class="label label-default">{{item.name}}</span>
+              <span class="pull-right">
+                <div class="btn-group">
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: item.id })"><i class="fa fa-key"></i></button>
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: item.id })"><i class="fa fa-pencil"></i></button>
+                  <button class="btn btn-xs btn-danger" ng-click="delete({ id: item.id })"><i class="fa fa-trash-o"></i></button>
+                </div>
+              </span>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <div class="panel-body" ng-show="!organization.users.length">
+        <h4 class="list-group-item-heading" translate>
+          There are no users in this organization!
+        </h4>
+        <p class="list-group-item-text" translate>Click <a href="" ui-sref="^.add({ organizationId: organization.id })">here</a> to add a user!</p>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-if="users.length">
+    <div class="panel-heading">
+        <!-- <div class="pull-right">
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.add()"
+               title="{{ 'Add outsider user' | translate }}"><i class="fa fa-plus-circle"></i></a>
+        </div> -->
+        <h3 class="panel-title" translate>General System Users</h3>
+    </div>
+    <table class="table table-bordered" ng-show="users.length">
+        <tbody>
+        <tr ng-repeat="item in users">
+            <th>
+              <a href="" ui-sref="app.users.view({id: item.id})">{{item.username}}</a>
+              <span class="text-muted">{{item.email}}</span>
+              <span ng-repeat="role in item.roles" class="label label-default">{{item.name}}</span>
+              <span class="pull-right">
+                <div class="btn-group">
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: item.id })"><i class="fa fa-key"></i></button>
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: item.id })"><i class="fa fa-pencil"></i></button>
+                  <button class="btn btn-xs btn-danger" ng-click="delete({ id: item.id })"><i class="fa fa-trash-o"></i></button>
+                </div>
+              </span>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Just list all system users without any classification -->
+<!-- <div class="box">
+  <div class="box-body no-padding" style="min-height: 120px;">
+    <table class="table table-bordered table-striped">
+      <tr ng-repeat="user in users">
+        <td>
+          <a href="" ui-sref="app.users.view({id: user.id})">{{user.username}}</a>
+          <span class="text-muted">{{user.email}}</span>
+          <span ng-repeat="role in user.roles" class="label label-default">{{role.name}}</span>
+          <span class="pull-right">
+            <div class="btn-group">
+              <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: user.id })"><i class="fa fa-key"></i></button>
+              <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: user.id })"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-xs btn-danger" ng-click="delete({ id: user.id })"><i class="fa fa-trash-o"></i></button>
+            </div>
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div ng-if="loading" class="overlay"></div>
+  <div ng-if="loading" class="loading-img"></div>
+</div> -->
