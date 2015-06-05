@@ -14,6 +14,13 @@ module.exports = function(app) {
   var Project = app.models.Project;
   var Task = app.models.Task;
 
+  var orgMember = app.models.orgMember;
+  var user = app.models.user;
+  var Role = app.models.Role;
+  var RoleMapping = app.models.RoleMapping;
+
+  // var Member = app.models.Member;
+
   var Qgroup = app.models.Qgroup;
 
   Organization.findOrCreate(
@@ -25,10 +32,11 @@ module.exports = function(app) {
     }, // create
     function(err, organization, created) {
       if (err) {
-        console.error('err', err);
+        log('err', err);
       }
       (created) ? log('created Organization', organization.name)
                 : log('found Organization', organization.name);
+
       Area.findOrCreate(
         {where:{name: 'Marketing'}}, // find
         {
@@ -38,7 +46,7 @@ module.exports = function(app) {
         }, // create
         function(err, area, created) {
           if (err) {
-            console.error('err', err);
+            log('err', err);
           }
           (created) ? log('created Area', area.name)
                     : log('found Area', area.name);
@@ -52,7 +60,7 @@ module.exports = function(app) {
             }, // create
             function(err, project, created) {
               if (err) {
-                console.error('err', err);
+                log('err', err);
               }
               (created) ? log('created Project', project.name)
                         : log('found Project', project.name);
@@ -65,7 +73,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -79,7 +87,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -95,7 +103,7 @@ module.exports = function(app) {
         }, // create
         function(err, area, created) {
           if (err) {
-            console.error('err', err);
+            log('err', err);
           }
           (created) ? log('created Area', area.name)
                     : log('found Area', area.name);
@@ -109,7 +117,7 @@ module.exports = function(app) {
             }, // create
             function(err, project, created) {
               if (err) {
-                console.error('err', err);
+                log('err', err);
               }
               (created) ? log('created Project', project.name)
                         : log('found Project', project.name);
@@ -122,7 +130,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -138,7 +146,7 @@ module.exports = function(app) {
         }, // create
         function(err, area, created) {
           if (err) {
-            console.error('err', err);
+            log('err', err);
           }
           (created) ? log('created Area', area.name)
                     : log('found Area', area.name);
@@ -152,7 +160,7 @@ module.exports = function(app) {
             }, // create
             function(err, project, created) {
               if (err) {
-                console.error('err', err);
+                log('err', err);
               }
               (created) ? log('created Project', project.name)
                         : log('found Project', project.name);
@@ -165,7 +173,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -179,7 +187,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -193,7 +201,7 @@ module.exports = function(app) {
                 }, // create
                 function(err, task, created) {
                   if (err) {
-                    console.error('err', err);
+                    log('err', err);
                   }
                   (created) ? log('created Task', task.name)
                             : log('found Task', task.name);
@@ -210,7 +218,7 @@ module.exports = function(app) {
           }, // create
           function(err, group, created) {
             if (err) {
-              console.error('err', err);
+              log('err', err);
             }
             (created) ? log('created Group', group.name)
                       : log('found Group', group.name);
@@ -225,7 +233,7 @@ module.exports = function(app) {
           }, // create
           function(err, project, created) {
             if (err) {
-              console.error('err', err);
+              log('err', err);
             }
             (created) ? log('created Project', project.name)
                       : log('found Project', project.name);
@@ -238,7 +246,7 @@ module.exports = function(app) {
               }, // create
               function(err, task, created) {
                 if (err) {
-                  console.error('err', err);
+                  log('err', err);
                 }
                 (created) ? log('created Task', task.name)
                           : log('found Task', task.name);
@@ -252,12 +260,28 @@ module.exports = function(app) {
               }, // create
               function(err, task, created) {
                 if (err) {
-                  console.error('err', err);
+                  log('err', err);
                 }
                 (created) ? log('created Task', task.name)
                           : log('found Task', task.name);
               });
           });
     });
+
+    Organization.findOrCreate(
+     {where:{name: 'Test1'}}, // find
+     {
+       name: 'Test 1',
+       lema: 'blabla',
+       info: 'nada...'
+     }, // create
+     function(err, organization, created) {
+       if (err) {
+         log('err', err);
+       }
+       (created) ? log('created Organization', organization.name)
+                 : log('found Organization', organization.name);
+    });
+
 
 };

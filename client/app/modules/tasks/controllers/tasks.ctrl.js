@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('com.module.tasks');
 
-app.controller('TasksCtrl', function($scope, $state, $stateParams, TasksService,
+app.controller('TasksCtrl', function($scope, $rootScope, $state, $stateParams, TasksService,
   gettextCatalog) {
 
   $scope.formFields = [{
@@ -45,12 +45,12 @@ app.controller('TasksCtrl', function($scope, $state, $stateParams, TasksService,
     });
   };
 
-  $scope.tasks = TasksService.getTasks();
-
   if ($stateParams.id) {
     $scope.task = TasksService.getTask($stateParams.id);
+  } else if ($stateParams.project) {
+    $scope.tasks = TasksService.getTasks($stateParams.project);
   } else {
-    $scope.task = {};
+    $scope.tasks = TasksService.getTasks(false);
   }
-
+  
 });

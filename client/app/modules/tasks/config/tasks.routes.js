@@ -22,5 +22,9 @@ app.config(function($stateProvider) {
     url: '/:id',
     templateUrl: 'modules/tasks/views/view.html',
     controller: 'TasksCtrl'
+  }).state('app.tasks.project', {
+    url: '/project/:project',
+    templateUrl: 'modules/tasks/views/list.html',
+    controller: 'TasksCtrl'
   });
 });

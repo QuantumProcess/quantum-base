@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('com.module.areas');
 
-app.controller('AreasCtrl', function($scope, $state, $stateParams, AreasService,
+app.controller('AreasCtrl', function($scope, $rootScope, $state, $stateParams, AreasService,
   gettextCatalog) {
 
   $scope.formFields = [{
@@ -14,11 +14,6 @@ app.controller('AreasCtrl', function($scope, $state, $stateParams, AreasService,
     type: 'textarea',
     label: gettextCatalog.getString('Description'),
     required: false
-  }, {
-    key: 'organizationId',
-    type: 'text',
-    label: gettextCatalog.getString('Organization'),
-    required: true
   }];
 
   $scope.formOptions = {
@@ -34,13 +29,17 @@ app.controller('AreasCtrl', function($scope, $state, $stateParams, AreasService,
   };
 
   $scope.onSubmit = function() {
-    AreasService.upsertArea($scope.area, function() {
+    var orgId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
+
+    AreasService.upsertArea($scope.area, orgId, function() {
       $scope.areas = AreasService.getAreas();
       $state.go('^.list');
     });
   };
 
-  $scope.areas = AreasService.getAreas();
+  AreasService.getAreas( $rootScope.currentOrganization, function(areas) {
+    $scope.areas = areas;
+  });
 
   if ($stateParams.id) {
     $scope.area = AreasService.getArea($stateParams.id);

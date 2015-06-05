@@ -646,6 +646,14 @@ header.header .logo .icon {
   margin: 0;
   padding: 0;
 }
+
+.sidebar .model-picker > select {
+  margin: 0;
+  padding: 0;
+  padding: 12px 5px 12px 15px;
+  width: 100%;
+}
+
 .sidebar .sidebar-menu > li {
   margin: 0;
   padding: 0;

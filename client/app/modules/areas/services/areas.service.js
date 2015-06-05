@@ -1,11 +1,28 @@
 'use strict';
 var app = angular.module('com.module.areas');
 
-app.service('AreasService', ['$state', 'CoreService', 'Area', 'gettextCatalog', function($state,
-  CoreService, Area, gettextCatalog) {
+app.service('AreasService', ['$state', 'CoreService', 'Area', 'Organization',
+  'gettextCatalog', function($state, CoreService, Area, Organization, gettextCatalog) {
 
-  this.getAreas = function() {
-    return Area.find();
+  this.getAreas = function( orgId, callback ) {
+
+    if(orgId===undefined) {
+
+      callback(Area.find());
+    }
+    else {
+      Organization.findById({
+        id:orgId,
+        filter:{ include:'areas' }
+      },
+        function(org) {
+          callback(org.areas);
+        },
+        function(errorResponse) {
+          console.error('Error',errorResponse);
+        }
+      );
+    }
   };
 
   this.getArea = function(id) {
@@ -14,7 +31,12 @@ app.service('AreasService', ['$state', 'CoreService', 'Area', 'gettextCatalog', 
     });
   };
 
-  this.upsertArea = function(area, cb) {
+  this.upsertArea = function(area, orgId, cb) {
+
+    if(orgId!=='') {
+        area.organizationId = orgId;
+    }
+
     Area.upsert(area, function() {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Area saved'), gettextCatalog.getString(

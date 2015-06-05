@@ -2,9 +2,15 @@
   "name": "user",
   "plural": "users",
   "base": "User",
+  "idInjection": true,
   "properties": {
-    "organizationId": {
-      "type": "string"
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
@@ -27,22 +33,28 @@
     "roles": {
       "type": "hasMany",
       "model": "Role",
-      "through": "RoleMapping",
-      "foreignKey": "principalId"
+      "foreignKey": "principalId",
+      "through": "RoleMapping"
     },
-    "organization": {
-      "type": "belongsTo",
+
+    "organizations": {
+      "type": "hasMany",
       "model": "Organization",
-      "foreignKey": "organizationId"
+      "foreignKey": "userId",
+      "through": "orgMember"
     },
-    "groups": {
-      "type": "hasAndBelongsToMany",
-      "model": "Group"
+
+    "areas": {
+      "type": "hasMany",
+      "model": "Area"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "Project"
     },
     "tasks": {
       "type": "hasMany",
-      "model": "Task",
-      "foreignKey": "ownerId"
+      "model": "Task"
     }
   },
   "acls": [

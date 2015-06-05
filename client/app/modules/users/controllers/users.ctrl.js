@@ -1,9 +1,8 @@
 'use strict';
 var app = angular.module('com.module.users');
 
-app.controller('UsersCtrl', function($scope, $stateParams, $state, CoreService,
+app.controller('UsersCtrl', function($scope, $rootScope, $stateParams, $state, CoreService,
   User, gettextCatalog, Organization) {
-
 
   if ($stateParams.id) {
     User.findOne({
@@ -22,45 +21,34 @@ app.controller('UsersCtrl', function($scope, $stateParams, $state, CoreService,
     $scope.user = {};
   }
 
-  // muestra todos los users sin ubicarlos en sus orgs
-  // $scope.loading = true;
-  // $scope.users = User.find({
-  //   filter: {
-  //     include: ['roles']
-  //   }
-  // }, function() {
-  //   $scope.loading = false;
-  // });
+  // function loadItems() {
+  //   $scope.users = User.find();
+  // }
+  // loadItems();
 
+  function getUsers() {
+    var orgId = $rootScope.currentOrganization;
 
-  // $scope.loading = true;
-  function loadItems() {
-    $scope.organizations = [];
-    Organization.find(function(orgs) {
-      angular.forEach(orgs, function(org) {
-        org.val = org.id;
-        org.users = Organization.users({
-          id: org.id
-        });
-        this.push(org);
-      }, $scope.organizations);
-    }, function() {
-      // $scope.loading = false;
-    });
-
-    // General System Users
-    $scope.users = [];
-    User.find(function(users) {
-      angular.forEach(users, function(user) {
-        if(!user.organizationId) {
-          this.push(user);
+    if(orgId===undefined) {
+      $scope.users = User.find();
+    }
+    else {
+      Organization.findById({
+        id:orgId,
+        filter:{ include:'members' }
+      },
+        function(org) {
+          $scope.users = org.members;
+          $scope.loading = false;
+        },
+        function(errorResponse) {
+          console.error('Error',errorResponse);
         }
-      }, $scope.users);
-    });
-
+      );
+    }
   }
 
-  loadItems();
+  getUsers();
 
   $scope.delete = function(id) {
     CoreService.confirm(gettextCatalog.getString('Are you sure?'),
@@ -84,6 +72,8 @@ app.controller('UsersCtrl', function($scope, $stateParams, $state, CoreService,
   };
 
   $scope.onSubmit = function() {
+    $scope.user.organizationId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
+
     User.upsert($scope.user, function() {
       CoreService.toastSuccess(gettextCatalog.getString('User saved'),
         gettextCatalog.getString('This user is save!'));
@@ -93,17 +83,6 @@ app.controller('UsersCtrl', function($scope, $stateParams, $state, CoreService,
         'Error saving user: ', +err));
     });
   };
-
-  // var orgs = Organization.find();
-  // console.log(orgs);
-  // var organizations;
-  // Organization.find(function(orgs) {
-  //   angular.forEach(orgs, function(org) {
-  //     org.value = org.id;
-  //     this.push(org);
-  //   }, organizations);
-  // });
-
 
   $scope.formFields = [{
     key: 'username',
@@ -125,12 +104,6 @@ app.controller('UsersCtrl', function($scope, $stateParams, $state, CoreService,
     type: 'text',
     label: gettextCatalog.getString('Last name'),
     required: true
-  }, {
-    key: 'organizationId',
-    type: 'select',
-    label: gettextCatalog.getString('Organization'),
-    options: $scope.organizations,
-    required: false
   }];
 
   $scope.formOptions = {

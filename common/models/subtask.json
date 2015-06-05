@@ -1,26 +1,31 @@
 {
-  "name": "Qgroup",
-  "plural": "Qgroups",
+  "name": "Subtask",
+  "plural": "Subtasks",
   "base": "PersistedModel",
   "strict": false,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "name": {
-      "type": "string",
-      "required": true
-    },
     "description": {
       "type": "string"
     },
-    "organizationId": {
+    "priority": {
+      "type": "string"
+    },
+    "state": {
       "type": "string"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "task": {
+      "type": "belongsTo",
+      "model": "Task",
+      "foreignKey": "taskId"
+    }
+  },
   "acls": [],
   "methods": []
 }

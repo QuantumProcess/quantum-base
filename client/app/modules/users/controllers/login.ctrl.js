@@ -85,20 +85,45 @@ angular.module('com.module.users')
         }, $scope.credentials,
         function(user) {
 
-          console.log(user.id); // => acess token
-          console.log(user.ttl); // => 1209600 time to live
-          console.log(user.created); // => 2013-12-20T21:10:20.377Z
-          console.log(user.userId); // => 1
+          // console.log(user); // => user object
+          // console.log(user.id); // => acess token
+          // console.log(user.ttl); // => 1209600 time to live
+          // console.log(user.created); // => 2013-12-20T21:10:20.377Z
+          // console.log(user.userId); // => 1
 
-          var next = $location.nextAfterLogin || '/';
-          $location.nextAfterLogin = null;
-          AppAuth.currentUser = $scope.loginResult.user;
-          CoreService.toastSuccess(gettextCatalog.getString('Logged in'),
-            gettextCatalog.getString('You are logged in!'));
-          if (next === '/login') {
-            next = '/';
-          }
-          $location.path(next);
+          User.findById({
+            id:user.userId,
+            filter:{ include: 'organizations' }
+          },
+            function(userNow) {
+
+              var next = $location.nextAfterLogin || '/';
+              $location.nextAfterLogin = null;
+              AppAuth.currentUser = $scope.loginResult.user;
+              CoreService.toastSuccess(gettextCatalog.getString('Logged in'),
+                gettextCatalog.getString('You are logged in!'));
+              if (next === '/login') {
+                next = '/';
+              }
+
+              // temporalmente lo ruteamos así para dividir en orgs.
+              // esto debería pasarse a dominios en la url. ej:  (nombre_org.quantum.com/)
+              if(next === '/') {
+
+                if(userNow.organizations.length) {
+                  next += 'app/org/' + userNow.organizations[0].id;
+                } else {
+                  next += 'app/org/0';
+                }
+
+              }
+
+              $location.path(next);
+            },
+            function(errorResponse) {
+              console.error('Error',errorResponse);
+            }
+          );
 
         },
         function(res) {

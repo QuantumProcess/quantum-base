@@ -66,6 +66,10 @@
     "dataSource": "db",
     "public": true
   },
+  "TaskType": {
+    "dataSource": "db",
+    "public": true
+  },
   "Area": {
     "dataSource": "db",
     "public": true
@@ -73,5 +77,13 @@
   "Organization": {
     "dataSource": "db",
     "public": true
+  },
+  "orgMember": {
+    "dataSource": "db",
+    "public": true
+  },
+  "areaMember": {
+    "dataSource": "db",
+    "public": false
   }
 }

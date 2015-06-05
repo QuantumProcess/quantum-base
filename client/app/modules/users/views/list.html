@@ -50,7 +50,8 @@
             <th>
               <a href="" ui-sref="app.users.view({id: item.id})">{{item.username}}</a>
               <span class="text-muted">{{item.email}}</span>
-              <span ng-repeat="role in item.roles" class="label label-default">{{item.name}}</span>
+              <span ng-repeat="role in item.roles" class="label label-default">{{role.name}}</span>
+              <span ng-repeat="org in item.organizations" class="label label-default">{{org.name}}</span>
               <span class="pull-right">
                 <div class="btn-group">
                   <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: item.id })"><i class="fa fa-key"></i></button>

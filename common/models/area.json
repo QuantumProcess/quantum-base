@@ -3,7 +3,7 @@
   "plural": "Areas",
   "base": "PersistedModel",
   "strict": false,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -21,6 +21,12 @@
   },
   "validations": [],
   "relations": {
+
+    "members": {
+      "type": "hasMany",
+      "model": "user"
+    },
+
     "organization": {
       "type": "belongsTo",
       "model": "Organization",
@@ -31,10 +37,15 @@
       "model": "Project",
       "foreignKey": "areaId"
     },
-    "members": {
+    "events": {
       "type": "hasMany",
-      "model": "user",
-      "foreignKey": "userId"
+      "model": "event",
+      "foreignKey": "areaId"
+    },
+    "tasks": {
+      "type": "hasMany",
+      "model": "Task",
+      "foreignKey": "areaId"
     }
   },
   "acls": [],

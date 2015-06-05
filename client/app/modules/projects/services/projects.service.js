@@ -1,11 +1,46 @@
 'use strict';
 var app = angular.module('com.module.projects');
 
-app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'gettextCatalog', function($state,
-  CoreService, Project, gettextCatalog) {
+app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'Organization', 'Area',
+  'gettextCatalog', function($state, CoreService, Project, Organization, Area, gettextCatalog) {
 
-  this.getProjects = function() {
-    return Project.find();
+  this.getProjectsInAreas = function( orgId, callback) {
+
+    if(orgId===undefined) {
+      if(callback) {
+        callback(Project.find());
+      } else {
+        return Project.find();
+      }
+    }
+    else {
+
+      Organization.findById({
+        id:orgId,
+        filter:{ include: { 'areas': ['projects'] } }
+      },
+        function(org) {
+          callback(org.areas);
+        },
+        function(errorResponse) {
+          console.error('Error',errorResponse);
+        }
+      );
+    }
+  };
+
+  this.getProjectsByArea = function( areaId, callback) {
+
+    Area.findById({
+      id:areaId,
+      filter:{ include:'projects' }
+    },function(area) {
+        callback(area.projects);
+      },
+      function(errorResponse) {
+        console.error('Error',errorResponse);
+      }
+    );
   };
 
   this.getProject = function(id) {
@@ -14,11 +49,16 @@ app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'gettextCata
     });
   };
 
-  this.upsertProject = function(project, cb) {
+  this.upsertProject = function(project, orgId, cb) {
+
+    if(orgId!=='') {
+        project.organizationId = orgId;
+    }
+
     Project.upsert(project, function() {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Project saved'), gettextCatalog.getString(
-        'Your project is safe with us!'));
+        'New project created!'));
       cb();
     }, function(err) {
       CoreService.toastSuccess(gettextCatalog.getString(

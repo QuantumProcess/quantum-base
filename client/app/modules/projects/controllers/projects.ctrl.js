@@ -1,8 +1,8 @@
 'use strict';
 var app = angular.module('com.module.projects');
 
-app.controller('ProjectsCtrl', function($scope, $state, $stateParams,
-  CoreService, ProjectsService, gettextCatalog, Area, Project) {
+app.controller('ProjectsCtrl', function($scope, $rootScope, $state, $stateParams,
+  CoreService, ProjectsService, gettextCatalog, Project) {
 
     var projectId = $stateParams.id;
     var areaId = $stateParams.areaId;
@@ -25,30 +25,51 @@ app.controller('ProjectsCtrl', function($scope, $state, $stateParams,
       $scope.project.areaId = areaId;
     }
 
-    function loadItems() {
-      $scope.areas = [];
-      Area.find(function(areas) {
-        angular.forEach(areas, function(area) {
-          area.projects = Area.projects({
-            id: area.id
-          });
-          this.push(area);
-        }, $scope.areas);
+    ProjectsService.getProjectsInAreas( $rootScope.currentOrganization, function(areas) {
+      $scope.areas = areas;
+
+      var formAreas = [];
+
+      $scope.areas.forEach(function(area){
+        formAreas.push({name: area.name, value: area.id});
       });
 
-      // Project in no Areas
-      $scope.projects = [];
-      Project.find(function(projects) {
-        angular.forEach(projects, function(project) {
-          if(!project.areaId) {
-            this.push(project);
-          }
-        }, $scope.projects);
-      });
+      $scope.formFields = [{
+        key: 'name',
+        type: 'text',
+        label: gettextCatalog.getString('Name'),
+        required: true
+      }, {
+        key: 'description',
+        type: 'textarea',
+        label: gettextCatalog.getString('Description'),
+        required: false
+      }, {
+        key: 'info',
+        type: 'textarea',
+        label: gettextCatalog.getString('Info'),
+        required: false
+      }, {
+        key: 'areaId',
+        type: 'select',
+        label: gettextCatalog.getString('Area'),
+        required: false,
+        options: formAreas
+      }];
+    });
 
+    //TODO: List Non Area Projects
+    //TODO: List General Projects (outside organizations)
+
+    if ($stateParams.id) {
+      $scope.project = ProjectsService.getProject($stateParams.id);
+    } else if ($stateParams.area) {
+      ProjectsService.getProjectsByArea( $stateParams.area, function(projects) {
+        $scope.projects = projects;
+      });
+    } else {
+      $scope.project = {};
     }
-
-    loadItems();
 
     $scope.delete = function(id) {
       CoreService.confirm(gettextCatalog.getString('Are you sure?'),
@@ -78,41 +99,13 @@ app.controller('ProjectsCtrl', function($scope, $state, $stateParams,
     // };
 
     $scope.onSubmit = function() {
-      ProjectsService.upsertProject($scope.project, function() {
+      var orgId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
+
+      ProjectsService.upsertProject($scope.project, orgId, function() {
         $scope.projects = ProjectsService.getProjects();
         $state.go('^.list');
       });
     };
-
-    // $scope.projects = ProjectsService.getProjects();
-    //
-    // if ($stateParams.id) {
-    //   $scope.project = ProjectsService.getProject($stateParams.id);
-    // } else {
-    //   $scope.project = {};
-    // }
-
-  $scope.formFields = [{
-    key: 'name',
-    type: 'text',
-    label: gettextCatalog.getString('Name'),
-    required: true
-  }, {
-    key: 'description',
-    type: 'textarea',
-    label: gettextCatalog.getString('Description'),
-    required: false
-  }, {
-    key: 'info',
-    type: 'textarea',
-    label: gettextCatalog.getString('Info'),
-    required: false
-  }, {
-    key: 'areaId',
-    type: 'text',
-    label: gettextCatalog.getString('Area'),
-    required: false
-  }];
 
   $scope.formOptions = {
     uniqueFormId: true,

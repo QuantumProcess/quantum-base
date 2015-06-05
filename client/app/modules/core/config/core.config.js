@@ -6,11 +6,12 @@ app.run(function($rootScope, Setting, gettextCatalog) {
   $rootScope.menu = [];
 
   // Add Sidebar Menu
-  $rootScope.addMenu = function(name, uisref, icon) {
+  $rootScope.addMenu = function(name, uisref, icon, scope) {
     $rootScope.menu.push({
       name: name,
       sref: uisref,
-      icon: icon
+      icon: icon,
+      scope: scope
     });
   };
 

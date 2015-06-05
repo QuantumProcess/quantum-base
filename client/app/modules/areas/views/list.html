@@ -9,7 +9,8 @@
       </a>
     </span>
     <h4 class="list-group-item-heading">
-      <a href="" ui-sref="^.view({id: area.id})">{{area.name}}</a>
+      <!-- <a href="" ui-sref="^.view({id: area.id})">{{area.name}}</a> -->
+      <a href="" ui-sref="app.projects.area({area: area.id})">{{area.name}}</a>
     </h4>
     <p class="list-group-item-text">{{area.description}}</p>
   </div>

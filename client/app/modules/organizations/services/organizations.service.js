@@ -1,10 +1,13 @@
 'use strict';
 var app = angular.module('com.module.organizations');
 
-app.service('OrganizationsService', ['$state', 'CoreService', 'Organization', 'gettextCatalog', function($state,
-  CoreService, Organization, gettextCatalog) {
+app.service('OrganizationsService', ['$state', 'CoreService', 'Organization', 'gettextCatalog', 'User',
+  function($state, CoreService, Organization, gettextCatalog, User) {
 
   this.getOrganizations = function() {
+
+    var users = User.find();
+    console.log(users);
     return Organization.find();
   };
 

@@ -1,0 +1,29 @@
+{
+  "name": "orgMember",
+  "plural": "orgMembers",
+  "base": "PersistedModel",
+  "properties": {
+    "id": {
+      "type": "String",
+      "id": true
+    },
+    "position": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "Organizations": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId"
+    },
+    "Members": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

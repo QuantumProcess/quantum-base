@@ -1,12 +1,46 @@
 'use strict';
 var app = angular.module('com.module.tasks');
 
-app.service('TasksService', ['$state', 'CoreService', 'Task', 'gettextCatalog', function($state,
-  CoreService, Task, gettextCatalog) {
+app.service('TasksService', ['$state', 'CoreService', 'Task', 'Organization','gettextCatalog',
+  function($state, CoreService, Task, Organization, gettextCatalog) {
 
-  this.getTasks = function() {
-    return Task.find();
+  this.getTasks = function(projectId) {
+
+    if(projectId) {
+      return Task.find({
+        filter: { where: { projectId: projectId } }
+      });
+    } else {
+      return Task.find();
+    }
   };
+
+  // this.getTasks = function( orgId, callback ) {
+  //
+  //   // Task.find({
+  //   //   where:{ organizationId: orgId }
+  //   // }, function(tasks) {
+  //   //   console.log(tasks);
+  //   // });
+  //
+  //   // if(orgId===undefined) {
+  //   //
+  //   //   callback(Task.find());
+  //   // }
+  //   // else {
+  //   //   Organization.findById({
+  //   //     id:orgId,
+  //   //     filter:{ include: { 'tasks': [ {'projects': ['areas'] } ] } }
+  //   //   },
+  //   //     function(org) {
+  //   //       callback(org.tasks);
+  //   //     },
+  //   //     function(errorResponse) {
+  //   //       console.error('Error',errorResponse);
+  //   //     }
+  //   //   );
+  //   // }
+  // };
 
   this.getTask = function(id) {
     return Task.findById({

@@ -1,15 +1,15 @@
 /*jshint sub:true*/
 'use strict';
 angular.module('com.module.events')
-  .controller('EventsCtrl', function($scope, $state, $stateParams, CoreService,
-    Event, gettextCatalog) {
+  .controller('EventsCtrl', function($scope, $rootScope, $state, $stateParams, CoreService,
+    Event, Organization, gettextCatalog) {
 
     var eventId = $stateParams.id;
 
     var createDate = function(date, time) {
-
-      console.log(date);
-      console.log(time);
+      // 
+      // console.log(date);
+      // console.log(time);
       if (!date || !time) {
         return date || time;
       }
@@ -44,7 +44,29 @@ angular.module('com.module.events')
       $scope.events = Event.find();
     }
 
-    loadItems();
+    function getEvents() {
+      var orgId = $rootScope.currentOrganization;
+
+      if(orgId===undefined) {
+        $scope.events = Event.find();
+      }
+      else {
+        Organization.findById({
+          id:orgId,
+          filter:{ include:'events' }
+        },
+          function(org) {
+            $scope.events = org.events;
+          },
+          function(errorResponse) {
+            console.error('Error',errorResponse);
+          }
+        );
+      }
+    }
+
+    getEvents();
+    // loadItems();
 
     $scope.delete = function(id) {
       CoreService.confirm(gettextCatalog.getString('Are you sure?'),
@@ -137,6 +159,8 @@ angular.module('com.module.events')
       event['end_time'] = createDate(event.eDate, event.eTime);
       event.eDate = null;
       event.eTime = null;
+
+      event.organizationId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
 
       Event.upsert($scope.event, function() {
         CoreService.toastSuccess(gettextCatalog.getString('Event saved'),

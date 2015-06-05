@@ -13,11 +13,123 @@ module.exports = function(app) {
 
   function createDefaultUsers() {
 
-    var User = app.models.User;
+    var User = app.models.user;
     var Role = app.models.Role;
     var RoleMapping = app.models.RoleMapping;
 
+
+
+    // var user1 = User.findOrCreate(
+    //   {where: {username: 'user1'}}, // find
+    //   {
+    //     firstName: 'User1',
+    //     lastName: '1',
+    //     email: 'user1@quantum.com',
+    //     username: 'user1',
+    //     password: 'quantum'
+    //   }, // create
+    //   function(err, createdUser, created) {
+    //     if (err) {
+    //       log('error creating user', err);
+    //     }
+    //     (created) ? log('created user', createdUser.username)
+    //               : log('found user', createdUser.username);
+    //   });
+    //
+    // var user2 = User.findOrCreate(
+    //   {where: {username: 'user2'}}, // find
+    //   {
+    //     firstName: 'User2',
+    //     lastName: '2',
+    //     email: 'user2@quantum.com',
+    //     username: 'user2',
+    //     password: 'quantum'
+    //   }, // create
+    //   function(err, createdUser, created) {
+    //     if (err) {
+    //       log('error creating user', err);
+    //     }
+    //     (created) ? log('created user', createdUser.username)
+    //               : log('found user', createdUser.username);
+    //   });
+    //
+    //   var user3 = User.findOrCreate(
+    //     {where: {username: 'user3'}}, // find
+    //     {
+    //       firstName: 'User3',
+    //       lastName: '3',
+    //       email: 'user3@quantum.com',
+    //       username: 'user3',
+    //       password: 'quantum'
+    //     }, // create
+    //     function(err, createdUser, created) {
+    //       if (err) {
+    //         log('error creating user', err);
+    //       }
+    //       (created) ? log('created user', createdUser.username)
+    //                 : log('found user', createdUser.username);
+    //     });
+    //
+    //
+    //     Role.create(
+    //       { name: 'org_member' } ,
+    //       function(err, role) {
+    //         if (err) {
+    //           log('error creando org_member Role', err);
+    //         }
+    //
+    //         log('creando org_member Role', role.name);
+    //
+    //         User.findOrCreate(
+    //           {where: {username: 'user1'}}, // find
+    //           {
+    //             firstName: 'User1',
+    //             lastName: '1',
+    //             email: 'user1@quantum.com',
+    //             username: 'user1',
+    //             password: 'quantum'
+    //           }, // create
+    //           function(err, createdUser, created) {
+    //             if (err) {
+    //               log('error creating roleUser', err);
+    //             }
+    //             (created) ? log('created user', createdUser.username)
+    //                       : log('found user', createdUser.username);
+    //
+    //             role.principals.create({
+    //               principalType: RoleMapping.USER,
+    //               principalId: role.id
+    //             }, function(err, rolePrincipal) {
+    //               if (err) {
+    //                 log('error creating rolePrincipal', err);
+    //               }
+    //               log('user1 es ahora org_member');
+    //             });
+    //           });
+    //       });
+
+        // Asigno role org_member al user1
+        // Role.find(
+        //   {where: {name: 'org_member'}},
+        //   function(err, role, created) {
+        //     if (err) {
+        //       log('error running find role(org_member)', err);
+        //     }
+        //     log('found role', role.name, created, err);
+        //
+        //     role.principals.create({
+        //       principalType: RoleMapping.USER,
+        //       principalId: user2.id
+        //     }, function(err, rolePrincipal) {
+        //       if (err) {
+        //         log('error creating rolePrincipal for user1', err);
+        //       }
+        //       log('created org_member role for user1');
+        //     });
+        // });
+
     var users = [];
+
     var roles = [{
       name: 'admin',
       users: [{
@@ -25,28 +137,30 @@ module.exports = function(app) {
         lastName: 'User',
         email: 'admin@quantum.com',
         username: 'admin',
-        password: 'admin',
-        organizationId: '0'
+        password: 'admin'
       }]
     }, {
-      name: 'users',
+      name: 'org_member',
       users: [{
-        firstName: 'Guest',
-        lastName: 'User',
-        email: 'user@quantum.com',
-        username: 'user',
-        password: 'user',
-        organizationId: '0'
-      }]
-    }, {
-      name: 'users',
-      users: [{
-        firstName: 'Matias',
-        lastName: 'Gallego',
-        email: 'matiasgallego@gmail.com',
-        username: 'matiasgallego',
-        password: 'matias',
-        organizationId: '1'
+        firstName: 'User1',
+        lastName: '1',
+        email: 'user1@quantum.com',
+        username: 'user1',
+        password: 'quantum'
+      },
+      {
+        firstName: 'User2',
+        lastName: '2',
+        email: 'user2@quantum.com',
+        username: 'user2',
+        password: 'quantum'
+      },
+      {
+        firstName: 'User3',
+        lastName: '3',
+        email: 'user3@quantum.com',
+        username: 'user3',
+        password: 'quantum'
       }]
     }];
 
@@ -83,6 +197,7 @@ module.exports = function(app) {
           });
         });
     });
+
     return users;
   }
 

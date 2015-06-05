@@ -3,7 +3,7 @@
   "plural": "Tasks",
   "base": "PersistedModel",
   "strict": false,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -15,32 +15,43 @@
     "description": {
       "type": "string"
     },
+    "priority": {
+      "type": "string"
+    },
     "state": {
-      "type": "string"
-    },
-    "projectId": {
-      "type": "string"
-    },
-    "ownerId": {
       "type": "string"
     }
   },
   "validations": [],
   "relations": {
+    "assigned": {
+      "type": "hasMany",
+      "model": "user"
+    },
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId"
+    },
+    "area": {
+      "type": "belongsTo",
+      "model": "Area",
+      "foreignKey": "areaId"
+    },
     "project": {
       "type": "belongsTo",
       "model": "Project",
       "foreignKey": "projectId"
     },
-    "owner": {
-      "type": "belongsTo",
-      "model": "user",
-      "foreignKey": "userId"
-    },
-    "assigned": {
+    "subtask": {
       "type": "hasMany",
-      "model": "user",
-      "foreignKey": "userId"
+      "model": "Subtask",
+      "foreignKey": "taskId"
+    },
+    "type": {
+      "type": "hasOne",
+      "model": "TaskType",
+      "foreignKey": "typeId"
     }
   },
   "acls": [],
