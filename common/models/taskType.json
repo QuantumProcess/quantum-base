@@ -1,0 +1,29 @@
+{
+  "name": "TaskType",
+  "plural": "TasksTypes",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "task": {
+      "type": "hasMany",
+      "model": "Task",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": []
+}
