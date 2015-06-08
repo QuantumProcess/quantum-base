@@ -1,0 +1,28 @@
+{
+  "name": "areaMember",
+  "plural": "areaMembers",
+  "base": "PersistedModel",
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "function": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "area": {
+      "type": "belongsTo",
+      "model": "Area",
+      "foreignKey": "areaId"
+    },
+    "member": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "memberId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

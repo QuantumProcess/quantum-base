@@ -1,0 +1,53 @@
+{
+  "name": "Area",
+  "plural": "Areas",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "organizationId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+
+    "members": {
+      "type": "hasMany",
+      "model": "user"
+    },
+
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "Project",
+      "foreignKey": "areaId"
+    },
+    "events": {
+      "type": "hasMany",
+      "model": "event",
+      "foreignKey": "areaId"
+    },
+    "tasks": {
+      "type": "hasMany",
+      "model": "Task",
+      "foreignKey": "areaId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

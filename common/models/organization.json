@@ -1,0 +1,54 @@
+{
+  "name": "Organization",
+  "plural": "Organizations",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "lema": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "members": {
+      "type": "hasMany",
+      "model": "user",
+      "foreignKey": "organizationId",
+      "through": "orgMember"
+    },
+
+    "areas": {
+      "type": "hasMany",
+      "model": "Area",
+      "foreignKey": "organizationId"
+    },
+    "projects": {
+      "type": "hasMany",
+      "model": "Project"
+    },
+    "tasks": {
+      "type": "hasMany",
+      "model": "Task"
+    },
+    "events": {
+      "type": "hasMany",
+      "model": "Event",
+      "foreignKey": "organizationId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

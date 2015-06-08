@@ -1,0 +1,56 @@
+{
+  "name": "Project",
+  "plural": "Projects",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "objetive": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+
+    "participants": {
+      "type": "hasMany",
+      "model": "user"
+    },
+
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization"
+    },
+    
+    "area": {
+      "type": "belongsTo",
+      "model": "Area",
+      "foreignKey": "areaId"
+    },
+    "tasks": {
+      "type": "hasMany",
+      "model": "Task",
+      "foreignKey": "projectId"
+    },
+    "events": {
+      "type": "hasMany",
+      "model": "event",
+      "foreignKey": "projectId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

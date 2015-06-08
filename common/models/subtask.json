@@ -1,0 +1,31 @@
+{
+  "name": "Subtask",
+  "plural": "Subtasks",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "task": {
+      "type": "belongsTo",
+      "model": "Task",
+      "foreignKey": "taskId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}
