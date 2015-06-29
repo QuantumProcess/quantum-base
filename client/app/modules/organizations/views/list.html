@@ -9,12 +9,20 @@
       </a>
     </span>
     <h2 class="list-group-item-heading">
-      <a href="" ui-sref="^.view({id: org.id})">{{org.name}}</a>
+      <a href="" ui-sref="app.organizations.dashboard({id: org.id})">{{org.name}}</a>
     </h2>
     <h4 class="list-group-item-heading">
       <a href="" ui-sref="^.view({id: org.id})">{{org.lema}}</a>
     </h4>
     <p class="list-group-item-text">{{org.info}}</p>
+
+    <!-- <div class="entity-button-bar">
+      <a class="btn btn-default" ui-sref="app.areas.list({organization: org.id})" role="button">Areas</a>
+      <a class="btn btn-default" ui-sref="app.projects.list({organization: org.id})" role="button">Projects</a>
+      <a class="btn btn-default" ui-sref="app.events.list({organization: org.id})" role="button">Events</a>
+      <a class="btn btn-default" ui-sref="app.users.list({organization: org.id})" role="button">Members</a>
+    </div> -->
+
   </div>
   <div ng-show="!organizations.length" class="list-group-item">
     <h4 class="list-group-item-heading" translate>

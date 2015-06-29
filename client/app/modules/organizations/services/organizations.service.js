@@ -1,13 +1,10 @@
 'use strict';
 var app = angular.module('com.module.organizations');
 
-app.service('OrganizationsService', ['$state', 'CoreService', 'Organization', 'gettextCatalog', 'User',
-  function($state, CoreService, Organization, gettextCatalog, User) {
+app.service('OrganizationsService', ['$state', 'CoreService', 'Organization', 'gettextCatalog',
+  function($state, CoreService, Organization, gettextCatalog) {
 
   this.getOrganizations = function() {
-
-    var users = User.find();
-    console.log(users);
     return Organization.find();
   };
 
@@ -17,12 +14,23 @@ app.service('OrganizationsService', ['$state', 'CoreService', 'Organization', 'g
     });
   };
 
+// filter:{ include: { [ {'areas': [ {'projects':['tasks']}, 'events'] }, {'projects'}, {'events'} ] } }
+
+  this.getFullOrganization = function(id) {
+    return Organization.findById({
+      id: id,
+      filter:{ include: { 'areas': [ {'projects': ['tasks'] } ] } }
+    });
+  }
+
   this.upsertOrganization = function(organization, cb) {
-    Organization.upsert(organization, function() {
+    Organization.upsert(organization, function(result) {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Organization saved'), gettextCatalog.getString(
         'Your organization is safe with us!'));
-      cb();
+        result.$promise.then(function(org){
+          cb(org);
+        });
     }, function(err) {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Error saving organization '), gettextCatalog.getString(

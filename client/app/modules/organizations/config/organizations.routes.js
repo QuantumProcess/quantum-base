@@ -10,6 +10,10 @@ app.config(function($stateProvider) {
     url: '',
     templateUrl: 'modules/organizations/views/list.html',
     controller: 'OrganizationsCtrl'
+  }).state('app.organizations.dashboard', {
+    url: '/:id/dashboard',
+    templateUrl: 'modules/organizations/views/dashboard.html',
+    controller: 'OrganizationsCtrl'
   }).state('app.organizations.add', {
     url: '/add',
     templateUrl: 'modules/organizations/views/form.html',
@@ -22,5 +26,9 @@ app.config(function($stateProvider) {
     url: '/:id',
     templateUrl: 'modules/organizations/views/view.html',
     controller: 'OrganizationsCtrl'
+  }).state('app.organizations.areas', {
+    url: '/:organization/areas',
+    templateUrl: 'modules/areas/views/list.html',
+    controller: 'AreasCtrl'
   });
 });
