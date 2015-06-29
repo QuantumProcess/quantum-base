@@ -1,0 +1,45 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <!-- <h4>{{subtask.title}}</h4> -->
+      <p>{{subtask.description}}</p>
+      <p style="font-style: italic;">{{subtask.priority}} {{subtask.state}}</p>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+      <div class="pull-right btn-group">
+        <a ui-sref="^.edit({id: task.id})" class="btn btn-default btn-sm" style="width:100%;" translate>Edit Subtask</a>
+        <br>
+        <a ng-click="delete({id: task.id})" class="btn btn-default btn-sm" style="width:100%;" translate>Delete Subtask</a>
+        <!-- <br>
+        <a ui-sref="app.subtasks.add({id: task.id})" class="btn btn-default btn-sm" style="width:100%;" translate>Add SubTask</a> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <hr> -->
+
+<!-- <div class='list-group'>
+  <div ng-repeat="subtask in task.subtask" class="list-group-item">
+    <span class="pull-right btn-group" style="margin-top: 7px;">
+      <a href="" class="btn btn-sm btn-default" ui-sref="app.tasks.edit({id: task.id})">
+        <i class="fa fa-pencil"></i>
+      </a>
+      <a href="" class="btn btn-sm btn-default" ng-click="delete({id: task.id})">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </span>
+    <h4 class="list-group-item-heading">
+      <a href="" ui-sref="app.tasks.view({id: task.id})">{{subtask.title}}</a>
+    </h4>
+    <p class="list-group-item-text">{{subtask.description}}</p>
+  </div>
+  <div ng-show="!project.tasks.length" class="list-group-item">
+    <h4 class="list-group-item-heading" translate>
+      There are no subtasks
+    </h4>
+    <p class="list-group-item-text" translate>Click <a href="" ui-sref="app.subtasks.add">here</a> to add a subtask!</p>
+  </div>
+</div> -->
