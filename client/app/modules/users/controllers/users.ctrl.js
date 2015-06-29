@@ -2,7 +2,7 @@
 var app = angular.module('com.module.users');
 
 app.controller('UsersCtrl', function($scope, $rootScope, $stateParams, $state, CoreService,
-  User, gettextCatalog, Organization) {
+  User, gettextCatalog, Organization, UsersService) {
 
   if ($stateParams.id) {
     User.findOne({
@@ -21,68 +21,72 @@ app.controller('UsersCtrl', function($scope, $rootScope, $stateParams, $state, C
     $scope.user = {};
   }
 
-  // function loadItems() {
-  //   $scope.users = User.find();
-  // }
-  // loadItems();
+  function loadItems() {
+    $scope.currentOrganizationUsers = [];
+    $scope.systemUsers = [];
 
-  function getUsers() {
-    var orgId = $rootScope.currentOrganization;
+    // UsersService.getOrganizationUsers( $stateParams.organization, function(users) {
+    //   $scope.currentOrganizationUsers = users;
+    // });
 
-    if(orgId===undefined) {
-      $scope.users = User.find();
-    }
-    else {
-      Organization.findById({
-        id:orgId,
-        filter:{ include:'members' }
-      },
-        function(org) {
-          $scope.users = org.members;
-          $scope.loading = false;
-        },
-        function(errorResponse) {
-          console.error('Error',errorResponse);
+    UsersService.getSystemUsers( function(users) {
+      if($stateParams.organization) {
+        for(var i=0; i<users.length; i++) {
+          var inOrg = false;
+          for(var j=0; j<users[i].organizations.length; j++) {
+            if(users[i].organizations[j].id==$stateParams.organization) {
+              inOrg = true;
+              continue;
+            }
+          }
+          if(inOrg) {
+            $scope.currentOrganizationUsers.push(users[i]);
+          } else {
+            $scope.systemUsers.push(users[i]);
+          }
         }
-      );
-    }
+      }
+    });
   }
 
-  getUsers();
-
   $scope.delete = function(id) {
-    CoreService.confirm(gettextCatalog.getString('Are you sure?'),
-      gettextCatalog.getString('Deleting this cannot be undone'),
-      function() {
-        User.deleteById(id, function() {
-            CoreService.toastSuccess(gettextCatalog.getString(
-              'User deleted'), gettextCatalog.getString(
-              'Your user is deleted!'));
-            $state.go('app.users.list');
-          },
-          function(err) {
-            CoreService.toastError(gettextCatalog.getString(
-              'Error deleting user'), gettextCatalog.getString(
-              'Your user is not deleted:' + err));
-          });
-      },
-      function() {
-        return false;
-      });
+    UsersService.deleteUser(id, function() {
+      if( $state.current.name.indexOf('view')!=-1 ) {
+        $state.go('^.list');
+      }
+
+      loadItems();
+    });
   };
 
   $scope.onSubmit = function() {
-    $scope.user.organizationId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
-
-    User.upsert($scope.user, function() {
-      CoreService.toastSuccess(gettextCatalog.getString('User saved'),
-        gettextCatalog.getString('This user is save!'));
+    UsersService.upsertUser($scope.user, function() {
       $state.go('^.list');
-    }, function(err) {
-      CoreService.toastError(gettextCatalog.getString(
-        'Error saving user: ', +err));
     });
   };
+
+  $scope.addUserToOrg = function(userId) {
+    if($stateParams.organization) {
+      UsersService.addToOrg(userId, $stateParams.organization, function() {
+        loadItems();
+      });
+    }
+  };
+
+  $scope.removeUserFromOrg = function(userId) {
+    if($stateParams.organization) {
+      UsersService.removeFromOrg(userId, $stateParams.organization, function() {
+        loadItems();
+      });
+    }
+  }
+
+  if($state.current.name.indexOf('add') != -1) {
+    $scope.user = {};
+    $scope.user.organizationId = $stateParams.organization?$stateParams.organization:'';
+  } else {
+    loadItems();
+  }
 
   $scope.formFields = [{
     key: 'username',

@@ -9,7 +9,7 @@
  * Contrller for Login Page
  **/
 angular.module('com.module.users')
-  .controller('LoginCtrl', function($scope, $routeParams, $location,
+  .controller('LoginCtrl', function($scope, $routeParams, $location, $state,
     CoreService, User, AppAuth, AuthProvider, gettextCatalog) {
 
     var TWO_WEEKS = 1000 * 60 * 60 * 24 * 7 * 2;
@@ -96,7 +96,6 @@ angular.module('com.module.users')
             filter:{ include: 'organizations' }
           },
             function(userNow) {
-
               var next = $location.nextAfterLogin || '/';
               $location.nextAfterLogin = null;
               AppAuth.currentUser = $scope.loginResult.user;
@@ -109,13 +108,11 @@ angular.module('com.module.users')
               // temporalmente lo ruteamos así para dividir en orgs.
               // esto debería pasarse a dominios en la url. ej:  (nombre_org.quantum.com/)
               if(next === '/') {
-
                 if(userNow.organizations.length) {
-                  next += 'app/org/' + userNow.organizations[0].id;
+                  next += 'app/' + userNow.organizations[0].id;
                 } else {
-                  next += 'app/org/0';
+                  next += 'app/';
                 }
-
               }
 
               $location.path(next);

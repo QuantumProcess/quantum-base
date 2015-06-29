@@ -1,13 +1,5 @@
-<div class="panel panel-default" ng-repeat="organization in organizations" ng-if="organization.users.length">
+<!-- <div class="panel panel-default" ng-repeat="organization in organizations" ng-if="organization.users.length">
     <div class="panel-heading">
-        <!-- <div class="pull-right">
-            <a href="" class="btn btn-default btn-xs" ui-sref="^.add({ organizationId: organization.id })"
-               title="{{ 'Add user to this organization' | translate }}"><i class="fa fa-plus-circle"></i></a>
-            <a href="" class="btn btn-default btn-xs" ui-sref="^.editorganization({ organizationId: organization.id })"
-               title="{{ 'Edit organization' | translate }}"><i class="fa fa-pencil"></i></a>
-            <a href="" class="btn btn-default btn-xs" ng-click="deleteorganization({ id: organization.id })"
-               title="{{ 'Delete organization' | translate }}"><i class="fa fa-trash-o"></i></a>
-        </div> -->
         <h3 class="panel-title">{{ organization.name }}</h3>
     </div>
     <table class="table table-bordered" ng-show="organization.users.length">
@@ -34,26 +26,27 @@
         </h4>
         <p class="list-group-item-text" translate>Click <a href="" ui-sref="^.add({ organizationId: organization.id })">here</a> to add a user!</p>
     </div>
-</div>
+</div> -->
 
-<div class="panel panel-default" ng-if="users.length">
+<div class="panel panel-default" ng-if="currentOrganizationUsers.length">
     <div class="panel-heading">
         <!-- <div class="pull-right">
             <a href="" class="btn btn-default btn-xs" ui-sref="^.add()"
                title="{{ 'Add outsider user' | translate }}"><i class="fa fa-plus-circle"></i></a>
         </div> -->
-        <h3 class="panel-title" translate>General System Users</h3>
+        <h3 class="panel-title" translate>This Organization</h3>
     </div>
-    <table class="table table-bordered" ng-show="users.length">
+    <table class="table table-bordered" ng-show="currentOrganizationUsers.length">
         <tbody>
-        <tr ng-repeat="item in users">
+        <tr ng-repeat="item in currentOrganizationUsers">
             <th>
               <a href="" ui-sref="app.users.view({id: item.id})">{{item.username}}</a>
               <span class="text-muted">{{item.email}}</span>
               <span ng-repeat="role in item.roles" class="label label-default">{{role.name}}</span>
-              <span ng-repeat="org in item.organizations" class="label label-default">{{org.name}}</span>
+              <span ng-repeat="org in item.organizations" class="label label-primary">{{org.name}}</span>
               <span class="pull-right">
                 <div class="btn-group">
+                  <button ng-if="organization" class="btn btn-xs btn-default" ng-click="removeUserFromOrg(item.id)">Remove from Org.</button>
                   <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: item.id })"><i class="fa fa-key"></i></button>
                   <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: item.id })"><i class="fa fa-pencil"></i></button>
                   <button class="btn btn-xs btn-danger" ng-click="delete({ id: item.id })"><i class="fa fa-trash-o"></i></button>
@@ -65,26 +58,32 @@
     </table>
 </div>
 
-<!-- Just list all system users without any classification -->
-<!-- <div class="box">
-  <div class="box-body no-padding" style="min-height: 120px;">
-    <table class="table table-bordered table-striped">
-      <tr ng-repeat="user in users">
-        <td>
-          <a href="" ui-sref="app.users.view({id: user.id})">{{user.username}}</a>
-          <span class="text-muted">{{user.email}}</span>
-          <span ng-repeat="role in user.roles" class="label label-default">{{role.name}}</span>
-          <span class="pull-right">
-            <div class="btn-group">
-              <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: user.id })"><i class="fa fa-key"></i></button>
-              <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: user.id })"><i class="fa fa-pencil"></i></button>
-              <button class="btn btn-xs btn-danger" ng-click="delete({ id: user.id })"><i class="fa fa-trash-o"></i></button>
-            </div>
-          </span>
-        </td>
-      </tr>
+<div class="panel panel-default" ng-if="systemUsers.length">
+    <div class="panel-heading">
+        <!-- <div class="pull-right">
+            <a href="" class="btn btn-default btn-xs" ui-sref="^.add()"
+               title="{{ 'Add outsider user' | translate }}"><i class="fa fa-plus-circle"></i></a>
+        </div> -->
+        <h3 class="panel-title" translate>Other System Users</h3>
+    </div>
+    <table class="table table-bordered" ng-show="systemUsers.length">
+        <tbody>
+        <tr ng-repeat="item in systemUsers">
+            <th>
+              <a href="" ui-sref="app.users.view({id: item.id})">{{item.username}}</a>
+              <span class="text-muted">{{item.email}}</span>
+              <span ng-repeat="role in item.roles" class="label label-default">{{role.name}}</span>
+              <span ng-repeat="org in item.organizations" class="label label-primary">{{org.name}}</span>
+              <span class="pull-right">
+                <div class="btn-group">
+                  <button ng-if="organization" class="btn btn-xs btn-default" ng-click="addUserToOrg(item.id)">Make Org. user</button>
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.password({ id: item.id })"><i class="fa fa-key"></i></button>
+                  <button class="btn btn-xs btn-default" ui-sref="app.users.edit({ id: item.id })"><i class="fa fa-pencil"></i></button>
+                  <button class="btn btn-xs btn-danger" ng-click="delete({ id: item.id })"><i class="fa fa-trash-o"></i></button>
+                </div>
+              </span>
+            </th>
+        </tr>
+        </tbody>
     </table>
-  </div>
-  <div ng-if="loading" class="overlay"></div>
-  <div ng-if="loading" class="loading-img"></div>
-</div> -->
+</div>
