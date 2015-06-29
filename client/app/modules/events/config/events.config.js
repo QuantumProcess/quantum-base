@@ -1,12 +1,12 @@
 'use strict';
 angular.module('com.module.events')
-  .run(function($rootScope, Event, gettextCatalog) {
+  .run(function($stateParams, $rootScope, Event, gettextCatalog) {
+
     $rootScope.addMenu(gettextCatalog.getString('Events'), 'app.events.list',
-      'fa-calendar-o');
+      'fa-calendar-o', ['user']);
 
     Event.find(function(data) {
       $rootScope.addDashboardBox('Events', 'bg-red', 'ion-calendar',
-        data.length, 'app.events.list');
+        data.length, 'app.events.list', ['user']);
     });
-
-  });
+});

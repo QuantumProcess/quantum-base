@@ -7,7 +7,7 @@ angular.module('com.module.events')
     var eventId = $stateParams.id;
 
     var createDate = function(date, time) {
-      // 
+      //
       // console.log(date);
       // console.log(time);
       if (!date || !time) {
@@ -45,7 +45,7 @@ angular.module('com.module.events')
     }
 
     function getEvents() {
-      var orgId = $rootScope.currentOrganization;
+      var orgId = $stateParams.organization;
 
       if(orgId===undefined) {
         $scope.events = Event.find();
@@ -63,6 +63,12 @@ angular.module('com.module.events')
           }
         );
       }
+    }
+
+    if($state.current.name.indexOf('add') != -1) {
+      $scope.event = {};
+      $scope.event.projectId = $stateParams.project?$stateParams.project:'';
+      $scope.event.areaId = $stateParams.area?$stateParams.area:'';
     }
 
     getEvents();
@@ -160,7 +166,7 @@ angular.module('com.module.events')
       event.eDate = null;
       event.eTime = null;
 
-      event.organizationId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
+      event.organizationId = $stateParams.organization?$stateParams.organization:'';
 
       Event.upsert($scope.event, function() {
         CoreService.toastSuccess(gettextCatalog.getString('Event saved'),

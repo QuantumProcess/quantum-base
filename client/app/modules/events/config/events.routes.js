@@ -10,7 +10,7 @@ angular.module('com.module.events')
       templateUrl: 'modules/events/views/list.html',
       controller: 'EventsCtrl'
     }).state('app.events.add', {
-      url: '/add',
+      url: '/add?project?area',
       templateUrl: 'modules/events/views/form.html',
       controller: 'EventsCtrl'
     }).state('app.events.edit', {
