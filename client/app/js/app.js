@@ -37,6 +37,7 @@ angular.module('loopbackApp', [
     'com.module.areas',
     'com.module.projects',
     'com.module.tasks',
+    'com.module.subtasks',
     'com.module.events',
     'com.module.users',
     'com.module.qgroups',
