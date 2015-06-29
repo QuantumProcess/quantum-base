@@ -1,0 +1,34 @@
+.entity-button-bar {
+  margin-top: 1em;
+  text-align: right;
+}
+
+.navbar-brand {
+  color: white;
+}
+
+.admin-header-action-buttons {
+  margin-right: 1em;
+}
+
+.button-add-task {
+  margin-right: .3em;
+  margin-top: .3em;
+}
+
+.subtask.priority {
+  font-weight: bolder;
+  font-size: small;
+  color: gray;
+}
+
+.subtask.item.closed {
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+.subtask.state {
+  font-size: small;
+  font-weight: bolder;
+  padding-left: 0.5em;
+}
