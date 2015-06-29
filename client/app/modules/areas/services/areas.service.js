@@ -27,7 +27,8 @@ app.service('AreasService', ['$state', 'CoreService', 'Area', 'Organization',
 
   this.getArea = function(id) {
     return Area.findById({
-      id: id
+      id: id,
+      filter:{ include: ['projects','events'] }
     });
   };
 
@@ -37,11 +38,12 @@ app.service('AreasService', ['$state', 'CoreService', 'Area', 'Organization',
         area.organizationId = orgId;
     }
 
-    Area.upsert(area, function() {
+    Area.upsert(area, function(object) {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Area saved'), gettextCatalog.getString(
         'Your area is safe with us!'));
-      cb();
+
+      cb(object.toJSON());
     }, function(err) {
       CoreService.toastSuccess(gettextCatalog.getString(
         'Error saving area '), gettextCatalog.getString(

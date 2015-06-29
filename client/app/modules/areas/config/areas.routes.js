@@ -22,5 +22,9 @@ app.config(function($stateProvider) {
     url: '/:id',
     templateUrl: 'modules/areas/views/view.html',
     controller: 'AreasCtrl'
+  }).state('app.areas.projects', {
+    url: '/:area/projects',
+    templateUrl: 'modules/projects/views/listByArea.html',
+    controller: 'ProjectsCtrl'
   });
 });
