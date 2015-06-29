@@ -1,17 +1,72 @@
 
-<h4>
-  <a href="" ui-sref="^.list" class="btn btn-default"><i class="fa fa-arrow-left"></i></a>
-  {{project.name}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <h4>{{project.name}}</h4>
+      <p>{{project.description}}</p>
+      <p style="font-style: italic;">{{project.info}}</p>
+    </div>
 
-  <span class="pull-right btn-group" style="margin-top: 7px;">
-    <a href="" class="btn btn-sm btn-default" ui-sref="^.edit({id: project.id})">
-      <i class="fa fa-pencil"></i>
-    </a>
-    <a href="" class="btn btn-sm btn-default" ng-click="delete({id: project.id})">
-      <i class="fa fa-trash-o"></i>
-    </a>
-  </span>
+    <div class="col-xs-6 col-md-4">
+      <div class="pull-right btn-group">
+        <a ui-sref="^.edit({id: project.id})" class="btn btn-default btn-sm" style="width:50%;" translate>Edit Project</a>
+        <a ng-click="delete({id: project.id})" class="btn btn-default btn-sm" style="width:50%;" translate>Delete Project</a>
+        <br>
+        <a ui-sref="app.tasks.add({project: project.id})" class="btn btn-default btn-sm" style="width:50%;" translate>Add Task</a>
+        <a ui-sref="app.events.add({project: project.id})" class="btn btn-default btn-sm" style="width:50%;" translate>Add Event</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-</h4>
 <hr>
-<pre>{{project | json}}</pre>
+
+  <div class='list-group'>
+    <h4 translate>Tasks</h4>
+    <div ng-repeat="task in project.tasks" class="list-group-item">
+      <span class="pull-right btn-group" style="margin-top: 7px;">
+        <a href="" class="btn btn-sm btn-default" ui-sref="app.tasks.edit({id: task.id})">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <a href="" class="btn btn-sm btn-default" ng-click="delete({id: task.id})">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </span>
+      <h4 class="list-group-item-heading">
+        <a href="" ui-sref="app.tasks.view({id: task.id})">{{task.title}}</a>
+      </h4>
+      <p class="list-group-item-text">{{task.description}}</p>
+    </div>
+    <div ng-show="!project.tasks.length" class="list-group-item">
+      <h4 class="list-group-item-heading" translate>
+        There are no tasks
+      </h4>
+      <p class="list-group-item-text" translate>Click <a href="" ui-sref="app.tasks.add({project: project.id})">here</a> to add a task!</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class='list-group'>
+    <h4 translate>Events</h4>
+    <div ng-repeat="event in project.events" class="list-group-item">
+      <span class="pull-right btn-group" style="margin-top: 7px;">
+        <a href="" class="btn btn-sm btn-default" ui-sref="app.events.edit({id: event.id})">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <a href="" class="btn btn-sm btn-default" ng-click="deleteEvent({id: event.id})">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </span>
+      <h4 class="list-group-item-heading">
+        <a href="" ui-sref="app.events.view({id: event.id})">{{event.name}}</a>
+      </h4>
+      <p class="list-group-item-text">{{event.description}}</p>
+    </div>
+    <div ng-show="!project.events.length" class="list-group-item">
+      <h4 class="list-group-item-heading" translate>
+        There are no events
+      </h4>
+      <p class="list-group-item-text" translate>Click <a href="" ui-sref="app.events.add({project: project.id})">here</a> to add a event!</p>
+    </div>
+  </div>

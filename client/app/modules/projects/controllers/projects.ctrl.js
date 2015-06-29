@@ -1,38 +1,24 @@
 'use strict';
 var app = angular.module('com.module.projects');
 
-app.controller('ProjectsCtrl', function($scope, $rootScope, $state, $stateParams,
-  CoreService, ProjectsService, gettextCatalog, Project) {
+app.controller('ProjectsCtrl', function($scope, $state, $stateParams,
+  CoreService, ProjectsService, gettextCatalog, Project, Event) {
 
-    var projectId = $stateParams.id;
-    var areaId = $stateParams.areaId;
-
-    if (projectId) {
-      $scope.project = Project.findById({
-        id: projectId
-      }, function(project) {
-        project.area = Project.area({
-          id: project.id
-        });
-      }, function(err) {
-        console.log(err);
-      });
-    } else {
-      $scope.project = {};
+    var checkOrganization = function(setCurrentOrgData) {
+      if ( typeof $scope.organization != 'undefined' ) {
+        setCurrentOrgData();
+      } else {
+        setTimeout(function () {
+          checkOrganization(setCurrentOrgData);
+        }, 100);
+      }
     }
 
-    if (areaId) {
-      $scope.project.areaId = areaId;
-    }
+    checkOrganization( function() {
 
-    ProjectsService.getProjectsInAreas( $rootScope.currentOrganization, function(areas) {
-      $scope.areas = areas;
-
-      var formAreas = [];
-
-      $scope.areas.forEach(function(area){
-        formAreas.push({name: area.name, value: area.id});
-      });
+      for(var i=0; i<$scope.organization.areas.length; i++) {
+        $scope.organization.areas[i].value = $scope.organization.areas[i].id;
+      }
 
       $scope.formFields = [{
         key: 'name',
@@ -54,22 +40,38 @@ app.controller('ProjectsCtrl', function($scope, $rootScope, $state, $stateParams
         type: 'select',
         label: gettextCatalog.getString('Area'),
         required: false,
-        options: formAreas
+        options: $scope.organization.areas
       }];
     });
 
-    //TODO: List Non Area Projects
-    //TODO: List General Projects (outside organizations)
-
-    if ($stateParams.id) {
-      $scope.project = ProjectsService.getProject($stateParams.id);
-    } else if ($stateParams.area) {
-      ProjectsService.getProjectsByArea( $stateParams.area, function(projects) {
-        $scope.projects = projects;
-      });
-    } else {
+    if($state.current.name.indexOf('add') != -1) {
       $scope.project = {};
+      $scope.project.areaId = parseInt($stateParams.area?$stateParams.area:$scope.organization.areas[0].id);
     }
+
+    var loadItems = function() {
+      if ($stateParams.id) {
+        // Descripcion de un solo proyecto
+        ProjectsService.getProject($stateParams.id, function(project) {
+          $scope.project = project;
+        });
+      } else if ($stateParams.area) {
+        // Lista de proyectos dentro de un Area
+        ProjectsService.getProjectsInArea( $stateParams.area, function(area) {
+          $scope.areas = [area];
+        });
+      } else if ($stateParams.organization) {
+        // Lista de proyectos de la Organizacion
+        ProjectsService.getProjectsInOrg( $stateParams.organization, function(areas) {
+          $scope.areas = areas;
+        });
+      } else {
+        // Por defecto, no hay proyectos
+        $scope.project = {};
+      }
+    }
+
+    loadItems();
 
     $scope.delete = function(id) {
       CoreService.confirm(gettextCatalog.getString('Are you sure?'),
@@ -79,8 +81,12 @@ app.controller('ProjectsCtrl', function($scope, $rootScope, $state, $stateParams
             CoreService.toastSuccess(gettextCatalog.getString(
               'Project deleted'), gettextCatalog.getString(
               'Your project is deleted!'));
-            loadItems();
-            $state.go('app.projects.list');
+
+              if( $state.current.name.indexOf('view')!=-1 ) {
+                $state.go('^.list');
+              }
+
+              loadItems();
           }, function(err) {
             CoreService.toastError(gettextCatalog.getString(
               'Error deleting project'), gettextCatalog.getString(
@@ -92,17 +98,37 @@ app.controller('ProjectsCtrl', function($scope, $rootScope, $state, $stateParams
         });
     };
 
-    // $scope.delete = function(id) {
-    //   ProjectsService.deleteProject(id, function() {
-    //     $scope.projects = ProjectsService.getProjects();
-    //   });
-    // };
+    $scope.deleteEvent = function(id) {
+      CoreService.confirm(gettextCatalog.getString('Are you sure?'),
+        gettextCatalog.getString('Deleting this cannot be undone'),
+        function() {
+          Event.deleteById(id, function() {
+            CoreService.toastSuccess(gettextCatalog.getString(
+              'Event deleted'), gettextCatalog.getString(
+              'Your event is deleted!'));
+              //
+              // if( $state.current.name.indexOf('view')!=-1 ) {
+              //   $state.go('^.list');
+              // }
+
+              loadItems();
+              
+          }, function(err) {
+            CoreService.toastError(gettextCatalog.getString(
+              'Error deleting event'), gettextCatalog.getString(
+              'Your event is not deleted: ') + err);
+          });
+        },
+        function() {
+          return false;
+        });
+    };
 
     $scope.onSubmit = function() {
-      var orgId = $rootScope.currentOrganization?$rootScope.currentOrganization:'';
+      var orgId = $stateParams.organization?$stateParams.organization:'';
+      var areaId = $stateParams.area?$stateParams.area:'';
 
-      ProjectsService.upsertProject($scope.project, orgId, function() {
-        $scope.projects = ProjectsService.getProjects();
+      ProjectsService.upsertProject($scope.project, orgId, areaId, function() {
         $state.go('^.list');
       });
     };

@@ -4,7 +4,7 @@ var app = angular.module('com.module.projects');
 app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'Organization', 'Area',
   'gettextCatalog', function($state, CoreService, Project, Organization, Area, gettextCatalog) {
 
-  this.getProjectsInAreas = function( orgId, callback) {
+  this.getProjectsInOrg = function( orgId, callback) {
 
     if(orgId===undefined) {
       if(callback) {
@@ -17,7 +17,7 @@ app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'Organizatio
 
       Organization.findById({
         id:orgId,
-        filter:{ include: { 'areas': ['projects'] } }
+        filter:{ include: { 'areas': [{'projects':['events']}] } }
       },
         function(org) {
           callback(org.areas);
@@ -29,13 +29,13 @@ app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'Organizatio
     }
   };
 
-  this.getProjectsByArea = function( areaId, callback) {
+  this.getProjectsInArea = function( areaId, callback) {
 
     Area.findById({
       id:areaId,
-      filter:{ include:'projects' }
+      filter:{ include:['projects','events'] }
     },function(area) {
-        callback(area.projects);
+        callback(area);
       },
       function(errorResponse) {
         console.error('Error',errorResponse);
@@ -43,17 +43,28 @@ app.service('ProjectsService', ['$state', 'CoreService', 'Project', 'Organizatio
     );
   };
 
-  this.getProject = function(id) {
+  this.getProject = function(id, callback) {
     return Project.findById({
-      id: id
-    });
+      id: id,
+      filter:{ include:['tasks','events'] }
+    },function(project) {
+        callback(project);
+      },
+      function(errorResponse) {
+        console.error('Error',errorResponse);
+      }
+    );
   };
 
-  this.upsertProject = function(project, orgId, cb) {
+  this.upsertProject = function(project, orgId, areaId, cb) {
 
     if(orgId!=='') {
         project.organizationId = orgId;
     }
+    //
+    // if(areaId!=='') {
+    //     project.areaId = areaId;
+    // }
 
     Project.upsert(project, function() {
       CoreService.toastSuccess(gettextCatalog.getString(
