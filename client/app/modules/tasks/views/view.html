@@ -1,17 +1,55 @@
 
-<h4>
-  <a href="" ui-sref="^.list" class="btn btn-default"><i class="fa fa-arrow-left"></i></a>
-  {{task.title}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <h4>{{task.title}}</h4>
+      <p>{{task.description}}</p>
+      <p style="font-style: italic;">{{project.priority}} {{project.state}}</p>
+    </div>
 
-  <span class="pull-right btn-group" style="margin-top: 7px;">
-    <a href="" class="btn btn-sm btn-default" ui-sref="^.edit({id: task.id})">
-      <i class="fa fa-pencil"></i>
-    </a>
-    <a href="" class="btn btn-sm btn-default" ng-click="delete({id: task.id})">
-      <i class="fa fa-trash-o"></i>
-    </a>
-  </span>
+    <div class="col-xs-6 col-md-4">
+      <div class="pull-right btn-group">
+        <a ui-sref="^.edit({id: task.id})" class="btn btn-default btn-sm" translate>Edit Task</a>
+        <a ng-click="delete({id: task.id})" class="btn btn-default btn-sm" translate>Delete Task</a>
+        <br>
+        <a ui-sref="app.subtasks.add({task: task.id})" class="btn btn-default btn-sm" style="width:100%;" translate>Add SubTask</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-</h4>
 <hr>
-<pre>{{task | json}}</pre>
+
+<div class='list-group'>
+  <div ng-repeat="subtask in task.subtasks" class="list-group-item">
+    <span class="pull-right btn-group" style="margin-top: 7px;">
+
+      <a href="" class="btn btn-sm btn-default" ng-click="changeSubtaskState(subtask.id)">
+        <span ng-show="!subtask.done">Close subtask</span>
+        <span ng-show="subtask.done">Open subtask</span>
+      </a>
+
+      <a href="" class="btn btn-sm btn-default" ui-sref="app.subtasks.edit({id: subtask.id})">
+        <i class="fa fa-pencil"></i>
+      </a>
+      <a href="" class="btn btn-sm btn-default" ng-click="deleteSubtask({id: subtask.id})">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </span>
+    <h4 class="list-group-item-heading">
+      <span class="subtask priority" ng-show="subtask.priority==1">High</span>
+      <span class="subtask priority" ng-show="subtask.priority==2">Medium</span>
+      <span class="subtask priority" ng-show="subtask.priority==3">Low</span>
+      <span class="subtask item" ng-class="{closed: subtask.done}">{{subtask.description}}</span>
+      <i class="subtask state" style="color:blue;" ng-show="!subtask.done">Open</i>
+      <i class="subtask state" style="color:red;text-decoration:none!important;" ng-show="subtask.done">Closed</i>
+    </h4>
+    <p class="list-group-item-text">Assigned: [trabajando]</p>
+  </div>
+  <div ng-show="!task.subtasks.length" class="list-group-item">
+    <h4 class="list-group-item-heading" translate>
+      There are no subtasks
+    </h4>
+    <p class="list-group-item-text" translate>Click <a href="" ui-sref="app.subtasks.add({task: task.id})">here</a> to add a subtask!</p>
+  </div>
+</div>
