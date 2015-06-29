@@ -29,11 +29,9 @@
       "foreignKey": "organizationId",
       "through": "orgMember"
     },
-
     "areas": {
       "type": "hasMany",
-      "model": "Area",
-      "foreignKey": "organizationId"
+      "model": "Area"
     },
     "projects": {
       "type": "hasMany",
@@ -45,8 +43,7 @@
     },
     "events": {
       "type": "hasMany",
-      "model": "Event",
-      "foreignKey": "organizationId"
+      "model": "Event"
     }
   },
   "acls": [],

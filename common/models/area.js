@@ -12,6 +12,18 @@ module.exports = function(Area) {
         Project.destroyById(project.id);
       });
     });
+
+    var Event = ctx.Model.app.models.Event;
+    Event.find({
+      where: {
+        areaId: ctx.where.id
+      }
+    }, function (err, events) {
+      events.forEach(function (event) {
+        Event.destroyById(event.id);
+      });
+    });
+
     next();
   });
 };

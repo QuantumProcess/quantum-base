@@ -22,31 +22,36 @@
   "validations": [],
   "relations": {
 
+    "in_charge": {
+      "type": "hasOne",
+      "model": "user",
+      "foreignKey": "id"
+    },
+
     "members": {
       "type": "hasMany",
-      "model": "user"
+      "model": "user",
+      "foreignKey": "areaId",
+      "through": "areaMember"
     },
 
     "organization": {
       "type": "belongsTo",
-      "model": "Organization",
-      "foreignKey": "organizationId"
+      "model": "Organization"
     },
     "projects": {
       "type": "hasMany",
-      "model": "Project",
-      "foreignKey": "areaId"
+      "model": "Project"
     },
     "events": {
       "type": "hasMany",
-      "model": "event",
-      "foreignKey": "areaId"
+      "model": "Event"
     },
     "tasks": {
       "type": "hasMany",
-      "model": "Task",
-      "foreignKey": "areaId"
+      "model": "Task"
     }
+
   },
   "acls": [],
   "methods": []

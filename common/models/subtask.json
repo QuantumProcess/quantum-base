@@ -12,18 +12,18 @@
       "type": "string"
     },
     "priority": {
-      "type": "string"
+      "type": "number"
     },
-    "state": {
-      "type": "string"
+    "done": {
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],
   "relations": {
     "task": {
       "type": "belongsTo",
-      "model": "Task",
-      "foreignKey": "taskId"
+      "model": "Task"
     }
   },
   "acls": [],

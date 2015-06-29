@@ -1,6 +1,6 @@
 {
-  "name": "areaMember",
-  "plural": "areaMembers",
+  "name": "projectMember",
+  "plural": "projectMembers",
   "base": "PersistedModel",
   "options": {},
   "properties": {
@@ -14,10 +14,10 @@
   },
   "validations": [],
   "relations": {
-    "Areas": {
+    "Projects": {
       "type": "belongsTo",
-      "model": "Area",
-      "foreignKey": "areaId"
+      "model": "Project",
+      "foreignKey": "projectId"
     },
     "Members": {
       "type": "belongsTo",

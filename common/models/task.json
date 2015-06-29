@@ -25,8 +25,12 @@
   "validations": [],
   "relations": {
     "assigned": {
-      "type": "hasMany",
+      "type": "hasAndBelongsToMany",
       "model": "user"
+    },
+    "subtasks": {
+      "type": "hasMany",
+      "model": "Subtask"
     },
     "organization": {
       "type": "belongsTo",
@@ -35,23 +39,11 @@
     },
     "area": {
       "type": "belongsTo",
-      "model": "Area",
-      "foreignKey": "areaId"
+      "model": "Area"
     },
     "project": {
       "type": "belongsTo",
-      "model": "Project",
-      "foreignKey": "projectId"
-    },
-    "subtask": {
-      "type": "hasMany",
-      "model": "Subtask",
-      "foreignKey": "taskId"
-    },
-    "type": {
-      "type": "hasOne",
-      "model": "TaskType",
-      "foreignKey": "typeId"
+      "model": "Project"
     }
   },
   "acls": [],

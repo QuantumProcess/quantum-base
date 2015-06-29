@@ -43,15 +43,19 @@
       "foreignKey": "userId",
       "through": "orgMember"
     },
-
     "areas": {
       "type": "hasMany",
-      "model": "Area"
+      "model": "Area",
+      "foreignKey": "userId",
+      "through": "areaMember"
     },
     "projects": {
       "type": "hasMany",
-      "model": "Project"
+      "model": "Project",
+      "foreignKey": "userId",
+      "through": "projectMember"
     },
+
     "tasks": {
       "type": "hasMany",
       "model": "Task"
@@ -62,6 +66,12 @@
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "org_member",
       "permission": "ALLOW"
     },
     {

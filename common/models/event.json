@@ -41,18 +41,15 @@
   "relations": {
     "organization": {
       "type": "belongsTo",
-      "model": "Organization",
-      "foreignKey": "organizationId"
+      "model": "Organization"
     },
     "area": {
       "type": "belongsTo",
-      "model": "Area",
-      "foreignKey": "areaId"
+      "model": "Area"
     },
     "project": {
       "type": "belongsTo",
-      "model": "Project",
-      "foreignKey": "projectId"
+      "model": "Project"
     }
   },
   "acls": [],
