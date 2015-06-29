@@ -17,19 +17,20 @@ app.run(function($rootScope, Setting, gettextCatalog) {
 
   // Add Menu Dashboard
   $rootScope.addMenu(gettextCatalog.getString('Dashboard'), 'app.home',
-    'fa-dashboard');
+    'fa-dashboard', ['admin','user']);
 
   // Dashboard
   $rootScope.dashboardBox = [];
 
   // Add Dashboard Box
-  $rootScope.addDashboardBox = function(name, color, icon, quantity, href) {
+  $rootScope.addDashboardBox = function(name, color, icon, quantity, href, scope) {
     $rootScope.dashboardBox.push({
       name: name,
       color: color,
       icon: icon,
       quantity: quantity,
-      href: href
+      href: href,
+      scope: scope
     });
   };
 

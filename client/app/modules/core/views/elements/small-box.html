@@ -1,7 +1,7 @@
 <div class="col-lg-3 col-xs-6">
   <div class="small-box {{ color }}" ui-sref="{{ href }}">
     <div class="inner">
-      <h3>{{quantity}} &nbsp;</h3>
+      <h3 ng-show="principal=='admin'">{{quantity}} &nbsp;</h3>
       <p>{{ name | translate }}</p>
     </div>
     <div class="icon"><i class="ion {{ icon }}"></i></div>

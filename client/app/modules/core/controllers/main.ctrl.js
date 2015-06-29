@@ -13,24 +13,47 @@
  **/
 angular.module('com.module.core')
   .controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location,
-    CoreService, User, gettextCatalog) {
+    CoreService, User, Organization, gettextCatalog) {
 
     $scope.currentUser = User.getCurrent();
-    $rootScope.currentOrganization = $stateParams.orgId;
 
     $scope.currentUser.$promise.then(function(user){
       User.findById({
         id:user.id,
-        filter:{ include:'organizations' }
+        filter:{ include: ['roles', {'organizations': ['areas']}] }
       },
         function(user) {
-          $scope.organizations = user.organizations;
-          for (var i = 0, len = $scope.organizations.length; i < len; i++) {
-            if ($scope.organizations[i].id == $rootScope.currentOrganization) {
-              $scope.organization = $scope.organizations[i];
-              break;
+
+          var admin = false;
+
+          for(var i=0; i<user.roles.length; i++) {
+            if(user.roles[i].name==='admin') {
+              admin = true;
             }
           }
+
+          $scope.organization = null;
+
+          if(admin) {
+            $scope.isAdmin = true;
+            Organization.find(
+              {
+                filter:{ include: 'areas' }
+              }, function(orgs){
+                $scope.organizations = orgs;
+                setCurrentOrganization();
+                $scope.blockUser = false;
+            });
+          } else {
+            $scope.isAdmin = false;
+            if(user.organizations.length) {
+              $scope.organizations = user.organizations;
+              setCurrentOrganization();
+            } else {
+              $scope.blockUser = true;
+            }
+          }
+
         },
         function(errorResponse) {
           console.error('Error',errorResponse);
@@ -38,14 +61,37 @@ angular.module('com.module.core')
       );
     });
 
-    $scope.menuoptions = $rootScope.menu;
+    $scope.menuoptions = [];
 
-    $scope.setOrganization = function(id) {
-      $state.go($state.current, { orgId: $scope.organization.id }, {reload: true});
+    for (var i = 0, len = $rootScope.menu.length; i < len; i++) {
+      $scope.menuoptions.push($rootScope.menu[i]);
+      // if ($rootScope.menu[i].scope===undefined) continue;
+      // if ($rootScope.menu[i].scope.indexOf($scope.principal) != -1) {
+      //   $scope.menuoptions.push($rootScope.menu[i]);
+      // }
+    }
+
+    var setCurrentOrganization = function() {
+      for (var i = 0, len = $scope.organizations.length; i < len; i++) {
+        if ($scope.organizations[i].id == $stateParams.organization) {
+          $scope.organization = $scope.organizations[i];
+          break;
+        }
+      }
+      if($scope.organization==null && $scope.organizations.length) {
+        $scope.organization = $scope.organizations[0];
+      }
+
+      if(!$stateParams.organization) {
+        $scope.setOrganization();
+      }
+    };
+
+    $scope.setOrganization = function() {
+      $state.go('app.home', { organization: $scope.organization.id });
     }
 
     $scope.showByScope=function(scope){
-      console.log(scope);
       switch (scope) {
         case 'Organizations':
           if($scope.organizations.length)

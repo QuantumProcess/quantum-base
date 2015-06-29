@@ -9,7 +9,7 @@ angular.module('com.module.core')
       })
       .state('app', {
         abstract: true,
-        url: '/app/org/:orgId',
+        url: '/app/:organization',
         templateUrl: 'modules/core/views/app.html',
         controller: 'MainCtrl'
       })

@@ -9,7 +9,7 @@
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-      <tabset class="nav-tabs-custom">
+      <tabset class="nav-tabs-custom" ng-if="!blockUser">
         <tab heading="{{ 'Dashboard' | translate }}">
           <div class="row">
 
@@ -61,6 +61,9 @@
           </div>
         </tab> -->
       </tabset>
+      <h2 ng-if="blockUser">
+        You have no Organizations
+      </h2>
     </div>
   </div>
 </section>

@@ -1,7 +1,13 @@
+<div class="pull-left admin-header-action-buttons">
+  <a back-button class="btn btn-default"><i class="fa fa-arrow-left"></i></a>
+</div>
 <div class="pull-right" >
     <div ng-transclude></div>
 </div>
 <h1>
     {{title}}
     <small>{{subTitle}}</small>
+
+    <p ng-if="description" style="font-size:12px!important;">{{description}}</p>
+
 </h1>
